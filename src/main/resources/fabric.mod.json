@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "shinto",
+  "version": "${version}",
+
+  "name": "Shinto",
+  "description": "You, kami no tsukai have a chance to get to know shinto. These magic will lead you to get the force of kami.",
+  "authors": [
+    "TuRou",
+    "Yaoyue"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "shinto.Shinto"
+    ]
+  },
+  "mixins": [
+    "shinto.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
