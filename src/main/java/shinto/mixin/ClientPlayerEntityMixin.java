@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import shinto.maho.surf.chant.ChantConstant;
+import shinto.magic.chant.ChantConstant;
 
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixin {

@@ -1,4 +1,4 @@
-package shinto.maho.surf.chant;
+package shinto.magic.chant;
 
 import net.minecraft.util.Identifier;
 
