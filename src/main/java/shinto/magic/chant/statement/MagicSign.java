@@ -65,7 +65,7 @@ public enum MagicSign {
     // grade 9
     TEMPESTAS(10),
     VACUOS(10),
-    MINING(10),
+//    PERDITIO(10),
     ALIENIS(7),
     ITER(8),
     FEBRICO(6),
