@@ -36,7 +36,7 @@ public class StatementResolver {
                     if (value.signs.equals(new HashSet<>(signs))) {
                         //TODO.. Check if mp is enough.
                         //TODO.. Cost mp
-                        value.spell.parse(magicTarget, charm, source);
+                        value.spell.cast(magicTarget, charm, source);
                         return true;
                     }
                 }

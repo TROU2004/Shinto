@@ -11,7 +11,9 @@ public enum MagicSign {
     SANO(1),
     VOLATUS(1),
     SENSUS(1),
-    DESIDIA(1); //TODO...
+    DESIDIA(1),
+    TELUM(1),
+    ITER(1); //TODO...
 
     private final int baseMP;
 
