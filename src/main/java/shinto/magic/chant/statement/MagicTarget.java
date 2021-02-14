@@ -21,7 +21,7 @@ public class MagicTarget {
         PlayerEntity playerEntity;
         if (source instanceof PlayerEntity) {
             playerEntity = (PlayerEntity) source;
-            switch (string) { //TODO...
+            switch (string) {
                 case "mlp":
                     target = getRayEntity(PlayerEntity.class, playerEntity);
                 case "mle":
