@@ -46,10 +46,11 @@ public class Charm {
     public void calcMP(List<MagicSign> signs) {
         MagicSign lastSign = signs.get(signs.size() - 1);
         if (lastSign.equals(MagicSign.TERMINUS)) {
+            float otherMP = 0;
             for (int i = 0; i < signs.size() - 1; i++) {
-                float otherMP = (float) (signs.get(i).getBaseMP() * Math.pow(1.1, i));
-                baseMP += otherMP + otherMP * 1.1;
+                otherMP += (float) (signs.get(i).getBaseMP() * Math.pow(1.1, i));
             }
+            baseMP = otherMP * 2.1;
         } else {
             for (int i = 0; i < signs.size(); i++) {
                 baseMP += signs.get(i).getBaseMP() * Math.pow(1.1, i);
