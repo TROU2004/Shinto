@@ -34,6 +34,7 @@ public class StatementResolver {
                     }
                     charm.calcMP(signs);
                 }
+                if (signs.isEmpty()) return false;
                 for (SpellRegistry value : SpellRegistry.values()) {
                     if (value.signs.equals(new HashSet<>(signs))) {
                         PlayerEntity player = (PlayerEntity) source;
