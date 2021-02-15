@@ -12,6 +12,7 @@ import shinto.mixin.interfaces.IMixinPlayerEntity;
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin implements IMixinPlayerEntity {
     private double mpValue;
+    private double extraDamage;
 
     @Inject(method = "writeCustomDataToTag",
             at = @At("TAIL"),
@@ -19,6 +20,7 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
             locals = LocalCapture.CAPTURE_FAILHARD)
     public void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
         tag.putDouble("mpValue", mpValue);
+        tag.putDouble("extraDamage", extraDamage);
     }
 
     @Inject(method = "readCustomDataFromTag",
@@ -27,6 +29,7 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
             locals = LocalCapture.CAPTURE_FAILHARD)
     public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
         mpValue = tag.contains("mpValue") ? tag.getDouble("mpValue") : 50;
+        extraDamage = tag.contains("extraDamage") ? tag.getDouble("extraDamage") : 0;
     }
 
     @Override
@@ -37,5 +40,15 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
     @Override
     public void setMP(double value) {
         mpValue = value;
+    }
+
+    @Override
+    public double getExtraDamage() {
+        return extraDamage;
+    }
+
+    @Override
+    public void setExtraDamage(double value) {
+        extraDamage = value;
     }
 }
