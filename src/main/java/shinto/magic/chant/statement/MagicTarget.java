@@ -6,9 +6,12 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.RaycastContext;
 
 import java.util.List;
 
@@ -61,13 +64,10 @@ public class MagicTarget {
         return this;
     }
 
-    //TODO... 修复RayTrace问题
     private Entity getRayEntity(Class<? extends Entity> clazz, PlayerEntity player) {
-        HitResult hitResult = player.raycast(20, 1.0f, false);
-        System.out.println(hitResult);
-        if (hitResult.getType() == HitResult.Type.ENTITY) {
-            System.out.println("GetEntity");
-            List<Entity> entities = player.world.getEntitiesByClass(clazz, new Box(new BlockPos(hitResult.getPos())).expand(0.1), EntityPredicates.EXCEPT_SPECTATOR);
+        BlockHitResult result = rayTrace(player);
+        if (result.getType() != HitResult.Type.MISS) {
+            List<Entity> entities = player.world.getEntitiesByClass(clazz, new Box(new BlockPos(result.getPos())).expand(2), EntityPredicates.EXCEPT_SPECTATOR);
             if (!entities.isEmpty()) {
                 return entities.get(0);
             }
@@ -76,9 +76,9 @@ public class MagicTarget {
     }
 
     private Entity getRayBoss(PlayerEntity player) {
-        HitResult hitResult = player.raycast(50, 1.0f, false);
-        if (hitResult.getType() == HitResult.Type.ENTITY) {
-            List<Entity> entities = player.world.getEntitiesByClass(MobEntity.class, new Box(new BlockPos(hitResult.getPos())).expand(2), entity -> entity instanceof EnderDragonEntity || entity instanceof WitherEntity);
+        BlockHitResult result = rayTrace(player);
+        if (result.getType() != HitResult.Type.MISS) {
+            List<Entity> entities = player.world.getEntitiesByClass(MobEntity.class, new Box(new BlockPos(result.getPos())).expand(2), entity -> entity instanceof EnderDragonEntity || entity instanceof WitherEntity);
             if (!entities.isEmpty()) {
                 return entities.get(0);
             }
@@ -90,4 +90,10 @@ public class MagicTarget {
         return player.world.getEntitiesByClass(MobEntity.class, new Box(player.getBlockPos()).expand(50), entity -> entity instanceof EnderDragonEntity || entity instanceof WitherEntity).toArray();
     }
 
+    private BlockHitResult rayTrace(PlayerEntity player) {
+        Vec3d vec1 = new Vec3d(player.getX(), player.getY() + player.getEyeY(), player.getZ());
+        Vec3d vec2 = player.getRotationVector();
+        Vec3d vec3 = vec1.add(vec2.x * 1000, vec2.y * 1000, vec2.z * 1000);
+        return player.world.raycast(new RaycastContext(vec1, vec3, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player));
+    }
 }
