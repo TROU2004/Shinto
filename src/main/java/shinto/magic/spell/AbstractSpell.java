@@ -1,5 +1,6 @@
 package shinto.magic.spell;
 
+import net.minecraft.entity.player.PlayerEntity;
 import shinto.magic.chant.statement.Charm;
 import shinto.magic.chant.statement.MagicTarget;
 
