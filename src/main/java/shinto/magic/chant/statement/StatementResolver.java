@@ -2,6 +2,8 @@ package shinto.magic.chant.statement;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Optional;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.LiteralText;
 import shinto.magic.spell.SpellRegistry;
 import shinto.magic.chant.ChantConstant;
 
@@ -28,16 +30,19 @@ public class StatementResolver {
                     if (optional.isPresent()) {
                         signs.add(optional.get());
                     } else {
-                        charm.repellency *= 0.8;
+                        charm.repellency *= 1.2;
                     }
                     charm.calcMP(signs);
                 }
                 for (SpellRegistry value : SpellRegistry.values()) {
                     if (value.signs.equals(new HashSet<>(signs))) {
-                        //TODO.. Check if mp is enough.
-                        //TODO.. Cost mp
-                        value.spell.cast(magicTarget, charm, source);
-                        return true;
+                        PlayerEntity player = (PlayerEntity) source;
+                        if (Charm.costMP(player, charm.getFinalMP())) {
+                            player.sendMessage(new LiteralText("剩余MP: " + Charm.getPlayerMP(player)), true);
+                            return value.spell.cast(magicTarget, charm, source);
+                        } else {
+                            player.sendMessage(new LiteralText("MP不足"), true);
+                        }
                     }
                 }
             }

@@ -19,10 +19,11 @@ public class StatusSpell extends AbstractSpell {
     }
 
     @Override
-    public void parse(MagicTarget target, Charm charm, Object source) {
+    public boolean parse(MagicTarget target, Charm charm, Object source) {
         if (target.getTarget() instanceof LivingEntity) {
             LivingEntity entity = (LivingEntity) target.getTarget();
-            entity.addStatusEffect(new StatusEffectInstance(effect, (int)(baseDuration * charm.praecantatio), (int)(baseAmplifier * charm.praecantatio)));
+            return entity.addStatusEffect(new StatusEffectInstance(effect, (int)(baseDuration * charm.praecantatio), (int)(baseAmplifier * charm.praecantatio)));
         }
+        return false;
     }
 }

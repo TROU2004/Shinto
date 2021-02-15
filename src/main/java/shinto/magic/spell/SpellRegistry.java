@@ -9,7 +9,7 @@ import shinto.magic.spell.spells.TelumSpell;
 import java.util.Collections;
 import java.util.HashSet;
 
-public enum SpellRegistry { //TODO..
+public enum SpellRegistry {
     EFFECT_SPEED(new StatusSpell(2000, 1, StatusEffects.SPEED), new MagicSign[]{MagicSign.AER}),
     EFFECT_RESISTANCE(new StatusSpell(3000, 1, StatusEffects.RESISTANCE), new MagicSign[]{MagicSign.TERRA}),
     EFFECT_STRENGTH(new StatusSpell(1000, 1, StatusEffects.STRENGTH), new MagicSign[]{MagicSign.IGNIS}),

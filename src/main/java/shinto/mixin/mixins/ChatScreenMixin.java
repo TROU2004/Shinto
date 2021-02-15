@@ -1,4 +1,4 @@
-package shinto.mixin;
+package shinto.mixin.mixins;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;

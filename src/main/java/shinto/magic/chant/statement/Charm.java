@@ -1,13 +1,15 @@
 package shinto.magic.chant.statement;
 
+import net.minecraft.entity.player.PlayerEntity;
+import shinto.mixin.interfaces.IMixinPlayerEntity;
+
 import java.util.List;
 
 public class Charm {
-    public float repellency = 1;
-    public float praecantatio;
-    private float baseMP;
-    private float relief; //TODO...
-
+    public double repellency = 1;
+    public double praecantatio;
+    private double baseMP;
+    public double relief;
 
     public boolean fromString(String string) {
         switch (string.toLowerCase()) {
@@ -49,5 +51,22 @@ public class Charm {
 
     public double getFinalMP() {
         return baseMP * praecantatio * repellency * (1 - relief);
+    }
+
+    public static double getPlayerMP(PlayerEntity playerEntity) {
+        return ((IMixinPlayerEntity) playerEntity).getMP();
+    }
+
+    public static void setPlayerMP(PlayerEntity playerEntity, double value) {
+        ((IMixinPlayerEntity) playerEntity).setMP(value);
+    }
+
+    public static boolean costMP(PlayerEntity playerEntity, double cost) {
+        if (cost > getPlayerMP(playerEntity)) {
+            return false;
+        } else {
+            ((IMixinPlayerEntity) playerEntity).setMP(getPlayerMP(playerEntity) - cost);
+            return true;
+        }
     }
 }

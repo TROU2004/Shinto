@@ -56,6 +56,7 @@ public class MagicTarget {
         return this;
     }
 
+    //TODO... 修复RayTrace问题
     private Entity getRayEntity(Class<? extends Entity> clazz, PlayerEntity player) {
         HitResult hitResult = player.raycast(20, 1.0f, false);
         System.out.println(hitResult);

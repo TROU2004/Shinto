@@ -1,10 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "shinto.mixin",
+  "package": "shinto.mixin.mixins",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-
+    "PlayerEntityMixin"
   ],
   "client": [
     "ChatScreenMixin",
