@@ -5,6 +5,7 @@ import shinto.magic.chant.statement.MagicSign;
 import shinto.magic.spell.spells.IterSpell;
 import shinto.magic.spell.spells.StatusSpell;
 import shinto.magic.spell.spells.TelumSpell;
+import shinto.magic.spell.spells.TerminusSpell;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -22,7 +23,8 @@ public enum SpellRegistry {
     EFFECT_NIGHT_VISION(new StatusSpell(2000, 1, StatusEffects.NIGHT_VISION), new MagicSign[]{MagicSign.SENSUS}),
     EFFECT_SLOWNESSS(new StatusSpell(2000, 1, StatusEffects.SLOWNESS), new MagicSign[]{MagicSign.DESIDIA}),
     ATTACK_TELUM(new TelumSpell(), new MagicSign[]{MagicSign.TELUM}),
-    MOVE_TOWARDS(new IterSpell(), new MagicSign[]{MagicSign.ITER});
+    MOVE_TOWARDS(new IterSpell(), new MagicSign[]{MagicSign.ITER}),
+    SHUT_DOWN(new TerminusSpell(), new MagicSign[]{MagicSign.TERMINUS});
 
     public final AbstractSpell spell;
     public final HashSet<MagicSign> signs = new HashSet<>();

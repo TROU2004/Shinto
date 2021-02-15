@@ -1,7 +1,7 @@
 package shinto.magic.chant.statement;
 
 public enum MagicSign {
-    // grade 1
+    // grade 1 √
     PRAECANTATIO(1),
     AER(3),
     TERRA(3),
@@ -61,7 +61,7 @@ public enum MagicSign {
     FLUCTUATIO(12),
     REVELATIO(20),
     // grade 8
-    TERMINUS(1),
+    TERMINUS(0),
     // grade 9
     TEMPESTAS(10),
     VACUOS(10),
