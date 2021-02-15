@@ -15,7 +15,7 @@ import java.util.List;
 public class MagicTarget {
     private Object target;
 
-    public boolean isGroup;
+    public boolean isGroup = false;
 
     public boolean fromString(String string, Object source) {
         string = string.toLowerCase();

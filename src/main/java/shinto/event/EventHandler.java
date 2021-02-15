@@ -8,13 +8,13 @@ import net.minecraft.util.Hand;
 
 public class EventHandler {
     public static void registerEvent() {
-        AttackEntityCallback.EVENT.register(((player, world, hand, entity, hitResult) -> {
-            if (hand != Hand.OFF_HAND) {
-                CompoundTag tag = new CompoundTag();
-                player.readCustomDataFromTag(tag);
-                if (tag.contains("telum")) entity.damage(DamageSource.player(player), tag.getInt("telum"));
-            }
-            return ActionResult.PASS;
-        }));
+//        AttackEntityCallback.EVENT.register(((player, world, hand, entity, hitResult) -> {
+//            if (hand != Hand.OFF_HAND) {
+//                CompoundTag tag = new CompoundTag();
+//                player.readCustomDataFromTag(tag);
+//                if (tag.contains("telum")) entity.damage(DamageSource.player(player), tag.getInt("telum"));
+//            }
+//            return ActionResult.PASS;
+//        }));
     }
 }
