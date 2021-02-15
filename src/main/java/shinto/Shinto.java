@@ -6,6 +6,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttribute;
 import shinto.event.EventHandler;
+import shinto.init.ItemInit;
 import shinto.network.ServerPacketHandler;
 
 public class Shinto implements ModInitializer {
@@ -13,5 +14,6 @@ public class Shinto implements ModInitializer {
     public void onInitialize() {
         ServerPacketHandler.init();
         EventHandler.registerEvent();
+        ItemInit.registerItems();
     }
 }

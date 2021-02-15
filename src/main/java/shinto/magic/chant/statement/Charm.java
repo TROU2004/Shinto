@@ -1,11 +1,13 @@
 package shinto.magic.chant.statement;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
 import shinto.mixin.interfaces.IMixinPlayerEntity;
 
 import java.util.List;
 
 public class Charm {
+    public static final Identifier COSTMP_IDENTIFIER = new Identifier("shinto", "costmp");
     public double repellency = 1;
     public double praecantatio;
     private double baseMP;
@@ -74,7 +76,7 @@ public class Charm {
         if (cost > getPlayerMP(playerEntity)) {
             return false;
         } else {
-            ((IMixinPlayerEntity) playerEntity).setMP(getPlayerMP(playerEntity) - cost);
+            setPlayerMP(playerEntity, getPlayerMP(playerEntity) - cost);
             return true;
         }
     }
