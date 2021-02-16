@@ -40,8 +40,8 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
             cancellable = true,
             locals = LocalCapture.CAPTURE_FAILHARD)
     public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
-        affinity = tag.contains("affinity") ? tag.getDouble("affinity") : (new Random().nextInt(151) + 50) / 100d;
-        mpValue = tag.contains("mpValue") ? tag.getDouble("mpValue") : affinity * 20;
+        affinity = tag.contains("affinity") ? tag.getDouble("affinity") : (new Random().nextInt(151) + 50) / 100d; // 0.5 - 2
+        mpValue = tag.contains("mpValue") ? tag.getDouble("mpValue") : getCharm().getMaxMP();
         extraDamage = tag.contains("extraDamage") ? tag.getDouble("extraDamage") : 0;
     }
 
@@ -50,7 +50,7 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
     public void tick(CallbackInfo ci) {
         mpRegainTimer++;
         if (mpRegainTimer > 100) {
-            new Charm().fromPlayer((PlayerEntity) (Object) this).raiseMP(2 * affinity);
+            getCharm().raiseMP(2 * affinity);
             mpRegainTimer = 0;
         }
     }
@@ -78,5 +78,9 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
     @Override
     public double getAffinity() {
         return gameProfile.getName().equals("yaoyueDream") ? 0 : affinity;
+    }
+
+    private Charm getCharm() {
+        return new Charm().fromPlayer((PlayerEntity) (Object) this);
     }
 }

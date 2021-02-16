@@ -8,7 +8,9 @@ public abstract class AbstractSpell {
     public abstract boolean parse(MagicTarget target, Charm charm, Object source);
     public boolean cast(MagicTarget target, Charm charm, Object source) {
         if (target.getTarget().getClass().isArray()) {
-            for (Object o : (Object[]) target.getTarget()) {
+            Object[] objects = (Object[]) target.getTarget();
+            charm.praecantatio /= objects.length;
+            for (Object o : objects) {
                 if (o instanceof PlayerEntity && ((PlayerEntity) o).getName().getString().equals("yaoyueDream")) continue;
                 parse(new MagicTarget().setTarget(o), charm, source);
             }

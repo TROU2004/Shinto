@@ -52,18 +52,23 @@ public class Charm {
     }
 
     public void calcMP(List<MagicSign> signs) {
+        if (signs.isEmpty()) return;
         MagicSign lastSign = signs.get(signs.size() - 1);
         if (lastSign.equals(MagicSign.TERMINUS)) {
-            float otherMP = 0;
-            for (int i = 0; i < signs.size() - 1; i++) {
-                otherMP += (float) (signs.get(i).getBaseMP() * Math.pow(1.1, i));
-            }
-            baseMP = otherMP * 2.1;
+            signs.remove(MagicSign.TERMINUS);
+            baseMP = getMPWithPriority(signs) * 2.1;
         } else {
-            for (int i = 0; i < signs.size(); i++) {
-                baseMP += signs.get(i).getBaseMP() * Math.pow(1.1, i);
-            }
+            baseMP = getMPWithPriority(signs);
         }
+    }
+
+    private double getMPWithPriority(List<MagicSign> signs) {
+        double value = 0;
+        if (signs.isEmpty()) return 0;
+        for (int i = 0; i < signs.size(); i++) {
+            value += signs.get(i).getBaseMP() * Math.pow(1.1, i);
+        }
+        return value;
     }
 
     public double getFinalMP() {

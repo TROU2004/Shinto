@@ -33,18 +33,20 @@ public class StatementResolver {
                     charm.calcMP(signs);
                 }
                 if (signs.isEmpty()) return false;
+                PlayerEntity player = (PlayerEntity) source;
                 for (SpellRegistry value : SpellRegistry.values()) {
                     if (value.signs.equals(new HashSet<>(signs))) {
-                        PlayerEntity player = (PlayerEntity) source;
                         charm.fromPlayer(player);
                         if (charm.costMP(charm.getFinalMP())) {
                             player.sendMessage(new LiteralText("剩余MP: " + charm.getMP()), true);
+                            player.sendMessage(new LiteralText("本次施法: " + value.name() + "; 消耗MP: " + charm.getFinalMP()), false);
                             return value.spell.cast(magicTarget, charm, source);
                         } else {
                             player.sendMessage(new LiteralText("MP不足"), true);
                         }
                     }
                 }
+                player.sendMessage(new LiteralText("法术不存在"), false);
             }
         }
         return false;
