@@ -49,10 +49,13 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
             at = @At("TAIL"))
     public void tick(CallbackInfo ci) {
         mpRegainTimer++;
-        if (mpRegainTimer > 100) {
-            getCharm().raiseMP(2 * affinity);
+        int level = getInstance().getHungerManager().getFoodLevel();
+        if (mpRegainTimer > 200 && level >= 6 && getCharm().getMP() < getCharm().getMaxMP() * 0.8) {
+            getCharm().raiseMP(5 * affinity);
+            getInstance().getHungerManager().setFoodLevel(level - 2);
             mpRegainTimer = 0;
         }
+
     }
 
     @Override
@@ -81,6 +84,10 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
     }
 
     private Charm getCharm() {
-        return new Charm().fromPlayer((PlayerEntity) (Object) this);
+        return new Charm().fromPlayer(getInstance());
+    }
+
+    private PlayerEntity getInstance() {
+        return (PlayerEntity) (Object) this;
     }
 }
