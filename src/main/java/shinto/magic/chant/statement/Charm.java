@@ -12,6 +12,7 @@ public class Charm {
     public double praecantatio;
     private double baseMP;
     public double relief;
+    private PlayerEntity playerEntity;
 
     public boolean fromString(String string) {
         switch (string.toLowerCase()) {
@@ -45,6 +46,11 @@ public class Charm {
         return true;
     }
 
+    public Charm fromPlayer(PlayerEntity playerEntity) {
+        this.playerEntity = playerEntity;
+        return this;
+    }
+
     public void calcMP(List<MagicSign> signs) {
         MagicSign lastSign = signs.get(signs.size() - 1);
         if (lastSign.equals(MagicSign.TERMINUS)) {
@@ -61,23 +67,31 @@ public class Charm {
     }
 
     public double getFinalMP() {
-        return baseMP * praecantatio * repellency * (1 - relief);
+        return baseMP * praecantatio * repellency * (1 - relief) * (1 - ((IMixinPlayerEntity) playerEntity).getAffinity() / 100d);
     }
 
-    public static double getPlayerMP(PlayerEntity playerEntity) {
+    public double getMP() {
         return ((IMixinPlayerEntity) playerEntity).getMP();
     }
 
-    public static void setPlayerMP(PlayerEntity playerEntity, double value) {
+    public void setMP(double value) {
         ((IMixinPlayerEntity) playerEntity).setMP(value);
     }
 
-    public static boolean costMP(PlayerEntity playerEntity, double cost) {
-        if (cost > getPlayerMP(playerEntity)) {
+    public boolean costMP(double cost) {
+        if (cost > getMP()) {
             return false;
         } else {
-            setPlayerMP(playerEntity, getPlayerMP(playerEntity) - cost);
+            setMP(getMP() - cost);
             return true;
         }
+    }
+
+    public void raiseMP(double value) {
+        setMP(Math.min((value + getMP()), getMaxMP()));
+    }
+
+    public double getMaxMP() {
+        return ((IMixinPlayerEntity) playerEntity).getAffinity() * 20;
     }
 }

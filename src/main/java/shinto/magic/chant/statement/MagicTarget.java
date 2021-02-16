@@ -7,7 +7,6 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -66,22 +65,18 @@ public class MagicTarget {
 
     private Entity getRayEntity(Class<? extends Entity> clazz, PlayerEntity player) {
         BlockHitResult result = rayTrace(player);
-        if (result.getType() != HitResult.Type.MISS) {
-            List<Entity> entities = player.world.getEntitiesByClass(clazz, new Box(new BlockPos(result.getPos())).expand(2), EntityPredicates.EXCEPT_SPECTATOR);
-            if (!entities.isEmpty()) {
-                return entities.get(0);
-            }
+        List<Entity> entities = player.world.getEntitiesByClass(clazz, new Box(new BlockPos(result.getPos())).expand(3), EntityPredicates.EXCEPT_SPECTATOR);
+        if (!entities.isEmpty()) {
+            return entities.get(0);
         }
         return null;
     }
 
     private Entity getRayBoss(PlayerEntity player) {
         BlockHitResult result = rayTrace(player);
-        if (result.getType() != HitResult.Type.MISS) {
-            List<Entity> entities = player.world.getEntitiesByClass(MobEntity.class, new Box(new BlockPos(result.getPos())).expand(2), entity -> entity instanceof EnderDragonEntity || entity instanceof WitherEntity);
-            if (!entities.isEmpty()) {
-                return entities.get(0);
-            }
+        List<Entity> entities = player.world.getEntitiesByClass(MobEntity.class, new Box(new BlockPos(result.getPos())).expand(3), entity -> entity instanceof EnderDragonEntity || entity instanceof WitherEntity);
+        if (!entities.isEmpty()) {
+            return entities.get(0);
         }
         return null;
     }

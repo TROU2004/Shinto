@@ -5,4 +5,5 @@ public interface IMixinPlayerEntity {
     void setMP(double value);
     double getExtraDamage();
     void setExtraDamage(double value);
+    double getAffinity();
 }

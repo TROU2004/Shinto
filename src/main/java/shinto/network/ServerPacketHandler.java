@@ -18,7 +18,7 @@ public class ServerPacketHandler {
         ServerPlayNetworking.registerGlobalReceiver(Charm.COSTMP_IDENTIFIER, (server, player, handler, buf, responseSender) -> {
             double value = buf.readDouble();
             server.execute(() -> {
-                Charm.costMP(player, value);
+                new Charm().fromPlayer(player).costMP(value);
             });
         });
     }

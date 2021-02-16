@@ -7,21 +7,19 @@ import net.minecraft.text.LiteralText;
 import shinto.magic.spell.SpellRegistry;
 import shinto.magic.chant.ChantConstant;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
 public class StatementResolver {
-    MagicTarget magicTarget = new MagicTarget();
-    Charm charm = new Charm();
-
     public boolean resolve(String sentence, Object source) {
         sentence = sentence.toLowerCase().substring(ChantConstant.PREFIX.length());
         List<String> strings = new ArrayList<>(Arrays.asList(sentence.split(" ")));
+        MagicTarget magicTarget = new MagicTarget();
         if (magicTarget.fromString(strings.get(0), source)) {
             strings.remove(0);
+            Charm charm = new Charm();
             if (charm.fromString(strings.get(strings.size() - 1))) {
                 strings.remove(strings.size() - 1);
                 List<MagicSign> signs = new ArrayList<>();
@@ -38,8 +36,9 @@ public class StatementResolver {
                 for (SpellRegistry value : SpellRegistry.values()) {
                     if (value.signs.equals(new HashSet<>(signs))) {
                         PlayerEntity player = (PlayerEntity) source;
-                        if (Charm.costMP(player, charm.getFinalMP())) {
-                            player.sendMessage(new LiteralText("剩余MP: " + Charm.getPlayerMP(player)), true);
+                        charm.fromPlayer(player);
+                        if (charm.costMP(charm.getFinalMP())) {
+                            player.sendMessage(new LiteralText("剩余MP: " + charm.getMP()), true);
                             return value.spell.cast(magicTarget, charm, source);
                         } else {
                             player.sendMessage(new LiteralText("MP不足"), true);

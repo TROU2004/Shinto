@@ -12,6 +12,7 @@ public class TelumSpell extends AbstractSpell {
         if (source instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) target.getTarget();
             ((IMixinPlayerEntity) player).setExtraDamage(6 * charm.praecantatio);
+            return true;
         }
         return false;
     }
