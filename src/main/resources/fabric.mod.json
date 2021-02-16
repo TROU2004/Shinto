@@ -7,7 +7,8 @@
   "description": "You, kami no tsukai have a chance to get to know shinto. These magic will lead you to get the force of kami.",
   "authors": [
     "TuRou",
-    "Yaoyue"
+    "Yaoyue",
+    "bingling_sama"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -15,7 +16,7 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/shinto/icon.png",
 
   "environment": "*",
   "entrypoints": {
