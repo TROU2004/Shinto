@@ -1,38 +1,35 @@
 package shinto.mixin.mixins;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import shinto.magic.chant.statement.Charm;
+import shinto.magic.Charm;
 import shinto.mixin.interfaces.IMixinPlayerEntity;
 
 import java.util.Random;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin implements IMixinPlayerEntity {
-    private double mpValue;
+    private double charmValue;
+    private double maxCharm;
     private double extraDamage;
     private double affinity;
     private int mpRegainTimer;
-    @Shadow
-    @Final
-    private GameProfile gameProfile;
 
     @Inject(method = "writeCustomDataToTag",
             at = @At("TAIL"),
             cancellable = true,
             locals = LocalCapture.CAPTURE_FAILHARD)
     public void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
-        tag.putDouble("mpValue", mpValue);
-        tag.putDouble("extraDamage", extraDamage);
+        tag.putDouble("charmValue", charmValue);
+        tag.putDouble("maxCharm", maxCharm);
         tag.putDouble("affinity", affinity);
+        tag.putDouble("extraDamage", extraDamage);
+
     }
 
     @Inject(method = "readCustomDataFromTag",
@@ -41,7 +38,8 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
             locals = LocalCapture.CAPTURE_FAILHARD)
     public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
         affinity = tag.contains("affinity") ? tag.getDouble("affinity") : (new Random().nextInt(151) + 50) / 100d; // 0.5 - 2
-        mpValue = tag.contains("mpValue") ? tag.getDouble("mpValue") : getCharm().getMaxMP();
+        charmValue = tag.contains("charmValue") ? tag.getDouble("charmValue") : getCharmInstance().getMaxCharm();
+        maxCharm = tag.contains("maxCharm") ? tag.getDouble("maxCharm") : getCharmInstance().getMaxCharm();
         extraDamage = tag.contains("extraDamage") ? tag.getDouble("extraDamage") : 0;
     }
 
@@ -50,27 +48,36 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
     public void tick(CallbackInfo ci) {
         mpRegainTimer++;
         int level = getInstance().getHungerManager().getFoodLevel();
-        if (mpRegainTimer > 200 && level >= 6 && getCharm().getMP() < getCharm().getMaxMP() * 0.8) {
-            getCharm().raiseMP(5 * affinity);
+        if (mpRegainTimer > 200 && level >= 6 && getCharmInstance().getCharmValue() < getCharmInstance().getMaxCharm() * 0.8) {
+            getCharmInstance().applyRegain();
             getInstance().getHungerManager().setFoodLevel(level - 2);
             mpRegainTimer = 0;
         }
 
     }
 
-    @Override
-    public double getMP() {
-        return mpValue;
+    private Charm getCharmInstance() {
+        return Charm.fromPlayer(getInstance());
     }
 
     @Override
-    public void setMP(double value) {
-        mpValue = value;
+    public double getCharm() {
+        return charmValue;
     }
 
     @Override
-    public double getExtraDamage() {
-        return extraDamage;
+    public void setCharm(double value) {
+        charmValue = value;
+    }
+
+    @Override
+    public double getMaxCharm() {
+        return maxCharm;
+    }
+
+    @Override
+    public void setMaxCharm(double value) {
+        maxCharm = value;
     }
 
     @Override
@@ -80,12 +87,9 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
 
     @Override
     public double getAffinity() {
-        return gameProfile.getName().equals("yaoyueDream") ? 0 : affinity;
+        return affinity;
     }
 
-    private Charm getCharm() {
-        return new Charm().fromPlayer(getInstance());
-    }
 
     private PlayerEntity getInstance() {
         return (PlayerEntity) (Object) this;

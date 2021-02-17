@@ -3,8 +3,7 @@ package shinto.magic.spell.spells;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import shinto.magic.chant.statement.Charm;
-import shinto.magic.chant.statement.MagicTarget;
+import net.minecraft.entity.player.PlayerEntity;
 import shinto.magic.spell.AbstractSpell;
 
 public class StatusSpell extends AbstractSpell {
@@ -19,10 +18,10 @@ public class StatusSpell extends AbstractSpell {
     }
 
     @Override
-    public boolean parse(MagicTarget target, Charm charm, Object source) {
-        if (target.getTarget() instanceof LivingEntity) {
-            LivingEntity entity = (LivingEntity) target.getTarget();
-            return entity.addStatusEffect(new StatusEffectInstance(effect, (int)(baseDuration * charm.praecantatio), (int)(baseAmplifier * charm.praecantatio)));
+    public boolean parse(Object target, PlayerEntity source, int memberSize, double speed, double strength) {
+        if (target instanceof LivingEntity) {
+            LivingEntity entity = (LivingEntity) target;
+            return entity.addStatusEffect(new StatusEffectInstance(effect, (int)(baseDuration * strength), (int)(baseAmplifier * speed)));
         }
         return false;
     }

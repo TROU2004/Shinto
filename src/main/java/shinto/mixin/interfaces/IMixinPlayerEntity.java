@@ -1,9 +1,10 @@
 package shinto.mixin.interfaces;
 
 public interface IMixinPlayerEntity {
-    double getMP();
-    void setMP(double value);
-    double getExtraDamage();
+    double getCharm();
+    void setCharm(double value);
+    double getMaxCharm();
+    void setMaxCharm(double value);
     void setExtraDamage(double value);
     double getAffinity();
 }

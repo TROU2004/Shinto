@@ -1,23 +1,28 @@
 package shinto.magic.spell;
 
 import net.minecraft.entity.player.PlayerEntity;
-import shinto.magic.chant.statement.Charm;
+import shinto.magic.Charm;
 import shinto.magic.chant.statement.MagicTarget;
 
 public abstract class AbstractSpell {
-    public abstract boolean parse(MagicTarget target, Charm charm, Object source);
-    public boolean cast(MagicTarget target, Charm charm, Object source) {
-        if (target.getTarget().getClass().isArray()) {
-            Object[] objects = (Object[]) target.getTarget();
-            charm.praecantatio /= objects.length;
+    protected abstract boolean parse(Object target, PlayerEntity source, int memberSize, double speed, double strength);
+
+    public boolean cast(MagicTarget target, PlayerEntity source, double charmValue) {
+        return cast(target, source, charmValue, 1, 1);
+    }
+
+    public boolean cast(MagicTarget target, PlayerEntity source, double charmValue, double speed, double strength) {
+        Object[] objects = target.getTarget().getClass().isArray() ? (Object[]) target.getTarget() : new Object[]{ target.getTarget() };
+        if (costCharm(source, charmValue, objects.length)) {
             for (Object o : objects) {
-                if (o instanceof PlayerEntity && ((PlayerEntity) o).getName().getString().equals("yaoyueDream")) continue;
-                parse(new MagicTarget().setTarget(o), charm, source);
+                if (!parse(o, source, objects.length, speed, strength)) return false;
             }
             return true;
-        } else {
-            if (target.getTarget() instanceof PlayerEntity && ((PlayerEntity) target.getTarget()).getName().getString().equals("yaoyueDream")) return false;
-            return parse(target, charm, source);
         }
+        return false;
+    }
+
+    private boolean costCharm(PlayerEntity source, double charmValue, int memberSize) {
+        return Charm.fromPlayer(source).cost(charmValue * Math.pow(1.5, memberSize - 1));
     }
 }

@@ -17,8 +17,6 @@ import java.util.List;
 public class MagicTarget {
     private Object target;
 
-    public boolean isInGroup = false;
-
     public boolean fromString(String string, Object source) {
         string = string.toLowerCase();
         PlayerEntity playerEntity;
@@ -36,18 +34,15 @@ public class MagicTarget {
                     break;
                 case "mre":
                     target = playerEntity.world.getEntitiesByClass(MobEntity.class, new Box(playerEntity.getBlockPos()).expand(6), EntityPredicates.EXCEPT_SPECTATOR).toArray();
-                    isInGroup = true;
                     break;
                 case "mrp":
                     target = playerEntity.world.getEntitiesByClass(PlayerEntity.class, new Box(playerEntity.getBlockPos()).expand(6), EntityPredicates.EXCEPT_SPECTATOR).toArray();
-                    isInGroup = true;
                     break;
                 case "mlb":
                     target = getRayBoss(playerEntity);
                     break;
                 case "mrb":
                     target = getNearBosses(playerEntity);
-                    isInGroup = true;
                     break;
             }
         }
