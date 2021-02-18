@@ -5,6 +5,7 @@ public interface IMixinPlayerEntity {
     void setCharm(double value);
     double getMaxCharm();
     void setMaxCharm(double value);
+    double getExtraDamage();
     void setExtraDamage(double value);
     double getAffinity();
 }

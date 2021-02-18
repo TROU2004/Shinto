@@ -8,7 +8,7 @@ import shinto.magic.spell.AbstractSpell;
 public class IterSpell extends AbstractSpell {
     @Override
     public boolean parse(Object target, PlayerEntity source, int memberSize, double speed, double strength) {
-        if (target instanceof LivingEntity) {
+        if (target instanceof LivingEntity && !(target instanceof PlayerEntity)) {
             LivingEntity entity = (LivingEntity) target;
             entity.yaw = source.yaw;
             entity.headYaw = source.headYaw;
@@ -16,7 +16,7 @@ public class IterSpell extends AbstractSpell {
             entity.prevYaw = source.prevYaw;
             entity.prevBodyYaw = source.prevBodyYaw;
             entity.prevHeadYaw = source.prevHeadYaw;
-            for (int i = 0; i < 3 * strength; i++) {
+            for (int i = 0; i < 6 * strength; i++) {
                 entity.travel(new Vec3d(0, 0, speed));
             }
             return true;

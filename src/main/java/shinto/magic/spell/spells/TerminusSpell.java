@@ -3,7 +3,6 @@ package shinto.magic.spell.spells;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
-import shinto.magic.chant.statement.MagicTarget;
 import shinto.magic.spell.AbstractSpell;
 
 public class TerminusSpell extends AbstractSpell {

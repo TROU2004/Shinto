@@ -29,8 +29,6 @@ public class StatementResolver {
             double baseCharm = Charm.getBaseCharmFromList(signs);
             for (SpellRegistry value : SpellRegistry.values()) {
                 if (value.signs.equals(new HashSet<>(signs))) {
-                    source.sendMessage(new LiteralText("本次施法: " + value.name() + "; 消耗MP: " + baseCharm), false);
-                    source.sendMessage(new LiteralText("剩余MP: " + Charm.fromPlayer(source).getCharmValue() + "/" + Charm.fromPlayer(source).getMaxCharm()), true);
                     return value.spell.cast(magicTarget, source, baseCharm);
                 }
             }

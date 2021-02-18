@@ -14,14 +14,14 @@ import java.util.Random;
 
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin implements IMixinPlayerEntity {
-    private double charmValue;
-    private double maxCharm;
+    private double affinity = (new Random().nextInt(151) + 50) / 100d;
+    private double charmValue = getCharmInstance().getFirstMaxCharm();
+    private double maxCharm = getCharmInstance().getFirstMaxCharm();
     private double extraDamage;
-    private double affinity;
     private int mpRegainTimer;
 
     @Inject(method = "writeCustomDataToTag",
-            at = @At("TAIL"),
+            at = @At("HEAD"),
             cancellable = true,
             locals = LocalCapture.CAPTURE_FAILHARD)
     public void writeCustomDataToTag(CompoundTag tag, CallbackInfo ci) {
@@ -29,18 +29,17 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
         tag.putDouble("maxCharm", maxCharm);
         tag.putDouble("affinity", affinity);
         tag.putDouble("extraDamage", extraDamage);
-
     }
 
     @Inject(method = "readCustomDataFromTag",
-            at = @At("TAIL"),
+            at = @At("HEAD"),
             cancellable = true,
             locals = LocalCapture.CAPTURE_FAILHARD)
     public void readCustomDataFromTag(CompoundTag tag, CallbackInfo ci) {
-        affinity = tag.contains("affinity") ? tag.getDouble("affinity") : (new Random().nextInt(151) + 50) / 100d; // 0.5 - 2
-        charmValue = tag.contains("charmValue") ? tag.getDouble("charmValue") : getCharmInstance().getMaxCharm();
-        maxCharm = tag.contains("maxCharm") ? tag.getDouble("maxCharm") : getCharmInstance().getMaxCharm();
-        extraDamage = tag.contains("extraDamage") ? tag.getDouble("extraDamage") : 0;
+        affinity = tag.getDouble("affinity");
+        charmValue = tag.getDouble("charmValue");
+        maxCharm = tag.getDouble("maxCharm");
+        extraDamage = tag.getDouble("extraDamage");
     }
 
     @Inject(method = "tick",
@@ -53,7 +52,6 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
             getInstance().getHungerManager().setFoodLevel(level - 2);
             mpRegainTimer = 0;
         }
-
     }
 
     private Charm getCharmInstance() {
@@ -78,6 +76,11 @@ public class PlayerEntityMixin implements IMixinPlayerEntity {
     @Override
     public void setMaxCharm(double value) {
         maxCharm = value;
+    }
+
+    @Override
+    public double getExtraDamage() {
+        return extraDamage;
     }
 
     @Override

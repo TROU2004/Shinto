@@ -34,14 +34,18 @@ public class Charm {
         getShinshi().setCharm(value);
     }
 
-    public boolean cost(double cost) {
+    public boolean costCharm(double cost) {
         cost *= (1 - getShinshi().getAffinity() / 100d);
-        boolean success = cost > getCharmValue();
-        if (success) setCharmValue(getCharmValue() - cost);
+        boolean success = cost <= getCharmValue();
+        if (success) {
+            System.out.println("本次施法消耗MP: " + cost);
+            setMaxCharm(getMaxCharm() + cost / getMaxCharm() * 2 * Math.pow(1.02, cost) * getShinshi().getAffinity());
+            setCharmValue(getCharmValue() - cost);
+        }
         return success;
     }
 
-    public void raise(double value) {
+    public void raiseCharm(double value) {
         setCharmValue(Math.min((value + getCharmValue()), getMaxCharm()));
     }
 
@@ -49,13 +53,20 @@ public class Charm {
         return getShinshi().getMaxCharm();
     }
 
-    //TODO... FirstMaxCharm
+    public void setMaxCharm(double value) {
+        getShinshi().setMaxCharm(value);
+    }
+
     public double getFirstMaxCharm() {
-        return 0;
+        return 20 * getShinshi().getAffinity();
     }
 
     public void applyRegain() {
+        raiseCharm(getBaseRegain() * getShinshi().getAffinity());
+    }
 
+    private double getBaseRegain() {
+        return 2;
     }
 
     private IMixinPlayerEntity getShinshi() {
